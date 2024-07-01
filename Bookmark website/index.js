@@ -1,6 +1,8 @@
+
+
 const form = document.getElementById('bookmark-form');
 const bookmarkList = document.getElementById('bookmark-list');
-const apiBase = 'https://crudcrud.com/api/660fd0239b0048b9b47754b98ba09516/bookmark';
+const apiBase = 'https://crudcrud.com/api/9c4a2b170d2a4d93883e1da9cc508ee8/bookmark';
 
 // Fetch bookmarks when the page loads
 document.addEventListener('DOMContentLoaded', getBookmarks);
@@ -13,9 +15,10 @@ function getBookmarks() {
     axios.get(apiBase)
         .then(response => {
             const bookmarks = response.data;
+            bookmarkList.innerHTML = ''; // Clear the list before adding bookmarks
             bookmarks.forEach(bookmark => displayBookmark(bookmark));
         })
-        .catch(error => console.error('Error fetching bookmarks:', error));
+        .catch(error => console.log('Error fetching bookmarks:', error));
 }
 
 // Add a new bookmark
@@ -36,23 +39,22 @@ function addBookmark(event) {
 
 // Display a bookmark in the list
 function displayBookmark(bookmark) {
-    const li = document.createElement('li');
-    li.className = 'bookmark-item';
-    li.setAttribute('data-id', bookmark._id);
-    li.innerHTML = `
-        <a href="${bookmark.url}" target="_blank">${bookmark.name}</a>
-        <button onclick="editBookmark('${bookmark._id}', '${bookmark.name}', '${bookmark.url}')">Edit</button>
+    const p = document.createElement('p');
+    p.className = 'bookmark-item';
+    p.setAttribute('data-id', bookmark._id);
+    p.innerHTML = `${bookmark.name} >
+        <a href="${bookmark.url}" target="_blank">${bookmark.url}</a>
         <button onclick="deleteBookmark('${bookmark._id}')">Delete</button>
+        <button onclick="editBookmark('${bookmark._id}', '${bookmark.name}', '${bookmark.url}')">Edit</button>
     `;
-    bookmarkList.appendChild(li);
+    bookmarkList.appendChild(p);
 }
 
 // Delete a bookmark
 function deleteBookmark(id) {
     axios.delete(`${apiBase}/${id}`)
         .then(() => {
-            const bookmarkItem = document.querySelector(`li[data-id="${id}"]`);
-            bookmarkItem.remove();
+            getBookmarks(); // Refresh the list after deletion
         })
         .catch(error => console.error('Error deleting bookmark:', error));
 }
@@ -66,13 +68,8 @@ function editBookmark(id, name, url) {
         const updatedBookmark = { name: newName, url: newUrl };
 
         axios.put(`${apiBase}/${id}`, updatedBookmark)
-            .then(response => {
-                const bookmarkItem = document.querySelector(`li[data-id="${id}"]`);
-                bookmarkItem.innerHTML = `
-                    <a href="${response.data.url}" target="_blank">${response.data.name}</a>
-                    <button onclick="editBookmark('${id}', '${response.data.name}', '${response.data.url}')">Edit</button>
-                    <button onclick="deleteBookmark('${id}')">Delete</button>
-                `;
+            .then(() => {
+                getBookmarks(); // Refresh the list after editing
             })
             .catch(error => console.error('Error updating bookmark:', error));
     }
