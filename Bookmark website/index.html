@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Manager</title>
+</head>
+
+<body>
+    <h1>Bookmark Website</h1>
+    <form id="bookmark-form" class="bookmark-form">
+       <label for="bookmark-form">Website Title :</label>
+        <input type="text" id="bookmark-name" placeholder="Bookmark Name" required>
+        <br><br>
+        <label for="bookmark-url">Website URL :</label>
+        <input type="url" id="bookmark-url" placeholder="Bookmark URL" required>
+        <br><br>
+        <button type="submit">Add</button>
+    </form>
+    <h3>All Bookmarks</h3>
+    <ul id="bookmark-list" class="bookmark-list"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
