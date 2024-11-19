@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -43,3 +44,6 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+=======
+console.log('i love git');
+>>>>>>> 2b74a96b14ed649e54d47d30026484e3d5177f3a
